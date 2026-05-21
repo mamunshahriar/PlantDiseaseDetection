@@ -38,9 +38,9 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 # ----------------------------------------------------------
 # Configuration — change these settings as needed
 # ----------------------------------------------------------
-IMAGE_SIZE = (128, 128)     # Input image dimensions
-BATCH_SIZE = 32             # Images processed per training step
-EPOCHS = 20                 # Max training rounds (EarlyStopping may stop earlier)
+IMAGE_SIZE = (64, 64)     # Input image dimensions
+BATCH_SIZE = 16             # Images processed per training step
+EPOCHS = 5                 # Max training rounds (EarlyStopping may stop earlier)
 NUM_CLASSES = 4             # Healthy, Early Blight, Late Blight, Leaf Mold
 DATASET_DIR = 'dataset'     # Path to your dataset folder
 MODEL_SAVE_PATH = 'model/plant_disease_model.h5'
@@ -225,3 +225,4 @@ print(f"  Final Validation Loss:     {val_loss:.4f}")
 print(f"{'='*40}")
 print(f"\n[SUCCESS] Model saved to: {MODEL_SAVE_PATH}")
 print("[INFO] You can now run 'python app.py' to start the web server.")
+
