@@ -1,0 +1,24 @@
+# ============================================================
+# Plant Disease Detection System — Python Dependencies
+# ============================================================
+# Install all dependencies with:
+#   pip install -r requirements.txt
+#
+# Tested with Python 3.9 – 3.11
+# ============================================================
+
+# Web framework
+flask==3.0.3
+
+# Deep learning (choose ONE of the following):
+tensorflow==2.16.1       # Full TensorFlow (GPU supported)
+# tensorflow-cpu==2.16.1  # CPU-only (lighter install)
+
+# Image processing
+Pillow==10.3.0
+
+# Scientific computing (used by TensorFlow/Keras internally)
+numpy==1.26.4
+
+# Optional: for plotting training curves in train_model.py
+matplotlib==3.9.0

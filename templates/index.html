@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlantScan — Disease Detection System</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ===== BACKGROUND DECORATION ===== -->
+    <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🌿</span>
+                <span class="logo-text">PlantScan</span>
+            </div>
+            <nav class="nav-badge">University Lab Project · ML &amp; Flask</nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main">
+
+        <!-- ---- HERO SECTION ---- -->
+        <section class="hero">
+            <div class="hero-tag">AI-Powered Plant Health</div>
+            <h1 class="hero-title">
+                Detect Plant<br />
+                <em>Disease Instantly</em>
+            </h1>
+            <p class="hero-desc">
+                Upload a photo of any plant leaf and our machine learning model will analyze it in seconds — identifying diseases and providing expert treatment advice.
+            </p>
+
+            <!-- Stat pills -->
+            <div class="stat-row">
+                <div class="stat-pill">
+                    <span class="stat-num">4</span>
+                    <span class="stat-label">Disease Classes</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">CNN</span>
+                    <span class="stat-label">Deep Learning</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">~2s</span>
+                    <span class="stat-label">Analysis Time</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- UPLOAD CARD ---- -->
+        <section class="upload-section" id="upload-section">
+            <div class="card upload-card" id="upload-card">
+
+                <!-- Drop Zone -->
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-icon" id="drop-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/>
+                            <path d="M24 32V20M24 20L19 25M24 20L29 25" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="14" y="33" width="20" height="3" rx="1.5" fill="currentColor" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <p class="drop-title" id="drop-title">Drop your leaf image here</p>
+                    <p class="drop-hint">or click to browse · PNG, JPG up to 16MB</p>
+
+                    <!-- Hidden file input -->
+                    <input type="file" id="file-input" accept="image/*" aria-label="Upload plant image" />
+                </div>
+
+                <!-- Image Preview (hidden until image chosen) -->
+                <div class="preview-area" id="preview-area" style="display:none">
+                    <img id="preview-img" src="" alt="Uploaded leaf preview" />
+                    <div class="preview-overlay">
+                        <button class="btn-change" id="btn-change" type="button">Change Image</button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="card-actions" id="card-actions" style="display:none">
+                    <button class="btn-primary" id="btn-analyze" type="button">
+                        <span class="btn-icon">🔬</span>
+                        Analyze Leaf
+                    </button>
+                    <button class="btn-secondary" id="btn-reset" type="button">Reset</button>
+                </div>
+
+                <!-- Supported classes info -->
+                <div class="classes-row">
+                    <span class="classes-label">Detects:</span>
+                    <span class="class-tag healthy">Healthy</span>
+                    <span class="class-tag blight">Early Blight</span>
+                    <span class="class-tag blight-late">Late Blight</span>
+                    <span class="class-tag mold">Leaf Mold</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- LOADING OVERLAY ---- -->
+        <div class="loading-overlay" id="loading-overlay" style="display:none" role="status" aria-live="polite">
+            <div class="loading-card">
+                <div class="spinner-ring"></div>
+                <p class="loading-title">Analyzing your leaf…</p>
+                <p class="loading-sub" id="loading-step">Preprocessing image</p>
+            </div>
+        </div>
+
+        <!-- ---- RESULT SECTION ---- -->
+        <section class="result-section" id="result-section" style="display:none">
+
+            <!-- Result Header Card -->
+            <div class="result-header-card" id="result-header-card">
+                <div class="result-badge" id="result-badge">
+                    <span id="result-icon">🌿</span>
+                    <span id="result-disease-name">Healthy</span>
+                </div>
+                <div class="confidence-block">
+                    <span class="confidence-label">Confidence</span>
+                    <span class="confidence-value" id="confidence-value">—</span>
+                </div>
+                <div class="confidence-bar-wrap">
+                    <div class="confidence-bar" id="confidence-bar" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- Detail Cards Grid -->
+            <div class="result-grid">
+
+                <!-- Uploaded Image -->
+                <div class="card result-img-card">
+                    <h3 class="card-section-title">Analyzed Image</h3>
+                    <img id="result-img" src="" alt="Analyzed leaf" class="result-img" />
+                </div>
+
+                <!-- Description -->
+                <div class="card result-detail-card">
+                    <h3 class="card-section-title">📋 Disease Overview</h3>
+                    <p id="result-description" class="result-description"></p>
+
+                    <!-- Severity indicator -->
+                    <div class="severity-row">
+                        <span class="severity-label">Severity:</span>
+                        <span class="severity-badge" id="severity-badge">—</span>
+                    </div>
+                </div>
+
+                <!-- Treatment Tips -->
+                <div class="card tips-card">
+                    <h3 class="card-section-title">💊 Treatment &amp; Prevention</h3>
+                    <ul class="tips-list" id="tips-list"></ul>
+                </div>
+
+                <!-- Probability Bars -->
+                <div class="card scores-card">
+                    <h3 class="card-section-title">📊 All Class Scores</h3>
+                    <div class="scores-list" id="scores-list"></div>
+                </div>
+
+            </div>
+
+            <!-- Try Another Button -->
+            <div class="result-footer">
+                <button class="btn-primary btn-lg" id="btn-try-another" type="button">
+                    <span class="btn-icon">🔄</span>
+                    Analyze Another Leaf
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ---- HOW IT WORKS ---- -->
+        <section class="how-section">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-row">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <div class="step-icon">📸</div>
+                    <h4>Upload Image</h4>
+                    <p>Take a clear photo of the plant leaf and upload it using drag &amp; drop or the file picker.</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <div class="step-icon">🤖</div>
+                    <h4>AI Analysis</h4>
+                    <p>Our CNN model preprocesses and analyzes the image, extracting features to identify patterns.</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <div class="step-icon">📋</div>
+                    <h4>Get Results</h4>
+                    <p>Receive a detailed diagnosis with confidence score, disease description, and treatment tips.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>PlantScan · Plant Disease Detection System · University Lab Project</p>
+        <p>Built with Flask · TensorFlow/Keras · PlantVillage Dataset</p>
+    </footer>
+
+    <!-- Load JavaScript -->
+    <script src="/static/js/app.js"></script>
+
+</body>
+</html>
