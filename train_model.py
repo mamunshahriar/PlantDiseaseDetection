@@ -50,7 +50,7 @@ MODEL_SAVE_PATH = 'model/plant_disease_model.h5'
 # ----------------------------------------------------------
 # ImageDataGenerator handles:
 # - Loading images from folders
-# - Resizing to 128x128
+# - Resizing to 64x64
 # - Normalizing pixel values
 # - Data augmentation (artificial variety to prevent overfitting)
 
